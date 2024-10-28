@@ -18,6 +18,7 @@ authentication_settings: Dict = {
         "nudostar_xf_user_cookie": "",
         "nudostar_username": "",
         "nudostar_password": "",
+        "simpcity_xf_user_cookie": "",
         "simpcity_ddg_cookie_1": "",
         "simpcity_ddg_cookie_2": "",
         "simpcity_ddg_cookie_5": "",
