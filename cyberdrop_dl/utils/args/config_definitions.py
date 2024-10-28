@@ -49,6 +49,9 @@ authentication_settings: Dict = {
     "PixelDrain": {
         "pixeldrain_api_key": "",
     },
+    "RealDebrid": {
+        "realdebrid_api_key": "",
+    },
     "Reddit": {
         "reddit_personal_use_script": "",
         "reddit_secret": "",
