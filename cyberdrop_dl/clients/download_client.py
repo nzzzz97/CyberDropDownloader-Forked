@@ -11,7 +11,6 @@ from typing import TYPE_CHECKING, Tuple, List
 
 import aiofiles
 import aiohttp
-from aiohttp_client_cache import CachedSession as ClientSession, CachedResponse
 
 from cyberdrop_dl.clients.errors import DownloadFailure, InvalidContentTypeFailure
 from cyberdrop_dl.utils.utilities import FILE_FORMATS, log
@@ -41,7 +40,7 @@ def limiter(func):
         await self._global_limiter.acquire()
         await domain_limiter.acquire()
 
-        async with ClientSession(headers=self._headers, raise_for_status=False,
+        async with aiohttp.ClientSession(headers=self._headers, raise_for_status=False,
                                         cookie_jar=self.client_manager.cookies, timeout=self._timeouts,
                                         trace_configs=self.trace_configs) as client:
             kwargs['client_session'] = client
@@ -83,7 +82,7 @@ class DownloadClient:
     @limiter
     async def _download(self, domain: str, manager: Manager, media_item: MediaItem,
                         save_content: Callable[[aiohttp.StreamReader], Coroutine[Any, Any, None]],
-                        client_session: ClientSession) -> bool:
+                        client_session: aiohttp.ClientSession) -> bool:
         """Downloads a file"""
         download_headers = copy.deepcopy(self._headers)
         download_headers['Referer'] = str(media_item.referer)
@@ -144,6 +143,7 @@ class DownloadClient:
                 await self.manager.progress_manager.file_progress.advance_file(media_item.task_id, resume_point)
 
             await save_content(resp.content)
+            del resp
             return True
 
     async def _append_content(self, media_item, content: aiohttp.StreamReader, update_progress: partial) -> None:
