@@ -25,7 +25,6 @@ def limiter(func):
 
     @wraps(func)
     async def wrapper(self: ScraperClient, *args, **kwargs):
-    async def wrapper(self: ScraperClient, *args, **kwargs):
         domain_limiter = await self.client_manager.get_rate_limiter(args[0])
         async with self.client_manager.session_limit:
             await self._global_limiter.acquire()
@@ -82,7 +81,7 @@ class ScraperClient:
             async with client_session.post(flaresolverr_server / "v1", headers=headers,
                                     ssl=self.client_manager.ssl_context,
                                     proxy=self.client_manager.proxy, json=data) as response:
-            json_obj: dict = await response.json()
+                json_obj: dict = await response.json()
             status = json_obj.get("status")
             if status != "ok":
                 raise DDOSGuardFailure(message="Failed to resolve URL with flaresolverr", origin=origin)
@@ -97,7 +96,6 @@ class ScraperClient:
 
     @limiter
     async def get_BS4(self, domain: str, url: URL, client_session: ClientSession, origin: Optional[ ScrapeItem | URL] = None) -> BeautifulSoup:
-    async def get_BS4(self, domain: str, url: URL, client_session: ClientSession ) -> BeautifulSoup:
         """Returns a BeautifulSoup object from the given URL"""
         async with client_session.get(url, headers=self._headers, ssl=self.client_manager.ssl_context,
                                     proxy=self.client_manager.proxy) as response:
@@ -128,8 +126,6 @@ class ScraperClient:
             assert content_type is not None
             if not any(s in content_type.lower() for s in ("html", "text")):
                 raise InvalidContentTypeFailure(message=f"Received {content_type}, was expecting text", origin=origin)
-            text = await response.text()
-                raise InvalidContentTypeFailure(message=f"Received {content_type}, was expecting text")
             text = await CachedStreamReader(await response.read()).read()
             return BeautifulSoup(text, 'html.parser'), URL(response.url)
 
