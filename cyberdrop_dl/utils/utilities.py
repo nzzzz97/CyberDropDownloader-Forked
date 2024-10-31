@@ -299,8 +299,8 @@ async def check_partials_and_empty_folders(manager: Manager):
     if not manager.config_manager.settings_data['Runtime_Options']['skip_check_for_empty_folders']:
         await log_with_color("Checking for empty folders...", "yellow", 20)
         await purge_dir_tree(manager.path_manager.download_dir)
-        if isinstance(manager.path_manager.sorted_dir, Path):
-            await purge_dir_tree(manager.path_manager.sorted_dir)
+        # if isinstance(manager.path_manager.sorted_dir, Path):
+            # await purge_dir_tree(manager.path_manager.sorted_dir)
 
 
 async def check_latest_pypi(log_to_console: bool = True, call_from_ui: bool = False) -> Tuple[str]:
@@ -416,7 +416,7 @@ async def sent_appraise_notifications(manager: Manager) -> None:
         results += [result]
 
     if not results:
-         result = Text('No notifications sent', 'yellow')
+        result = Text('No notifications sent', 'yellow')
     if all (results):
         result = Text('Success', 'green')
     elif any (results):
