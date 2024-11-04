@@ -341,7 +341,7 @@ async def check_latest_pypi(log_to_console: bool = True, call_from_ui: bool = Fa
                 test_tag = dot_tag if dot_tag else no_dot_tag
 
                 rough_matches = [release for release in releases
-                                 if re.match(
+                                if re.match(
                         rf'{major_version}\.{minor_version}\.{patch_version}(\.{test_tag}\d+|{test_tag}\d+)', release)]
                 latest_testing_version = max(rough_matches, key=lambda x: int(re.search(r'(\d+)$', x).group()))
                 latest_testing_version_rich = f"[b cyan]{latest_testing_version}[/b cyan]"

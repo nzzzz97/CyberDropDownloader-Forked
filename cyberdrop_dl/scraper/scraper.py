@@ -31,8 +31,9 @@ class ScrapeMapper:
                         "cyberdrop": self.cyberdrop, "cyberfile": self.cyberfile, "e-hentai": self.ehentai,
                         "erome": self.erome, "fapello": self.fapello, "f95zone": self.f95zone, "gofile": self.gofile,
                         "hotpic": self.hotpic, "ibb.co": self.imgbb, "imageban": self.imageban, "imgbox": self.imgbox,
+
                         "imgur": self.imgur, "jpg.church": self.chevereto, "kemono": self.kemono,
-                        "leakedmodels": self.leakedmodels, "mediafire": self.mediafire, "nudostar.com": self.nudostar,
+                        "leakedmodels": self.leakedmodels, "mediafire": self.mediafire, "nekohouse": self.nekohouse, "nudostar.com": self.nudostar,
                         "nudostar.tv": self.nudostartv, "omegascans": self.omegascans, "pimpandhost": self.pimpandhost,
                         "pixeldrain": self.pixeldrain, "postimg": self.postimg, "realbooru": self.realbooru,
                         "reddit": self.reddit, "redgifs": self.redgifs, "rule34vault": self.rule34vault,
@@ -149,6 +150,11 @@ class ScrapeMapper:
         """Creates a MediaFire Crawler instance"""
         from cyberdrop_dl.scraper.crawlers.mediafire_crawler import MediaFireCrawler
         self.existing_crawlers['mediafire'] = MediaFireCrawler(self.manager)
+
+    async def nekohouse(self) -> None:
+        """Creates a Nekohouse Crawler instance"""
+        from cyberdrop_dl.scraper.crawlers.nekohouse_crawler import NekohouseCrawler
+        self.existing_crawlers['nekohouse'] = NekohouseCrawler(self.manager)
 
     async def nudostar(self) -> None:
         """Creates a NudoStar Crawler instance"""
@@ -437,7 +443,7 @@ class ScrapeMapper:
         link = URL(entry[0])
         retry_path = Path(entry[1])
         scrape_item = ScrapeItem(link, parent_title="",
-                                 part_of_album=True, retry=True, retry_path=retry_path)
+                                part_of_album=True, retry=True, retry_path=retry_path)
         completed_at = entry[2]
         created_at = entry[3]
         if not isinstance(scrape_item.url, URL):
@@ -503,7 +509,7 @@ class ScrapeMapper:
                 download_folder = await get_download_path(self.manager, scrape_item, "jdownloader")
                 relative_download_dir = download_folder.relative_to(self.manager.path_manager.download_dir)
                 await self.jdownloader.direct_unsupported_to_jdownloader(scrape_item.url, scrape_item.parent_title,
-                                                                         relative_download_dir)
+                                                                        relative_download_dir)
                 success = True
             except JDownloaderFailure as e:
                 await log(f"Failed to send {scrape_item.url} to JDownloader\n{e.message}", 40)

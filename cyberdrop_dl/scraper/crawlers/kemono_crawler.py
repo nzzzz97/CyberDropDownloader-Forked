@@ -24,7 +24,7 @@ class KemonoCrawler(Crawler):
         super().__init__(manager, "kemono", "Kemono")
         self.primary_base_domain = URL("https://kemono.su")
         self.api_url = URL("https://kemono.su/api/v1")
-        self.services = ['patreon', 'fanbox', 'fantia', 'afdian', 'boosty', 'dlsite', 'gumroad', 'subscribestar']
+        self.services = ['afdian', 'boosty', 'dlsite', 'fanbox', 'fantia', 'gumroad', 'patreon', 'subscribestar']
         self.request_limiter = AsyncLimiter(10, 1)
 
         self.maximum_offset = None
@@ -66,7 +66,7 @@ class KemonoCrawler(Crawler):
         while True:
             async with self.request_limiter:
                 JSON_Resp = await self.client.get_json(self.domain, api_call.with_query({"o": offset}),
-                                                       origin=scrape_item)
+                                                    origin=scrape_item)
                 offset += 50
                 if not JSON_Resp:
                     break
@@ -83,7 +83,7 @@ class KemonoCrawler(Crawler):
         while offset <= maximum_offset:
             async with self.request_limiter:
                 JSON_Resp = await self.client.get_json(self.domain, api_call.with_query({"o": offset}),
-                                                       origin=scrape_item)
+                                                    origin=scrape_item)
                 offset += 150
                 if not JSON_Resp:
                     break
@@ -149,8 +149,8 @@ class KemonoCrawler(Crawler):
 
         yarl_links: list[URL] = []
         all_links = [x.group().replace(".md.", ".") for x in
-                     re.finditer(r"(?:http(?!.*\.\.)[^ ]*?)(?=($|\n|\r\n|\r|\s|\"|\[/URL]|']\[|]\[|\[/img]|</|'))",
-                                 content)]
+                    re.finditer(r"(?:http(?!.*\.\.)[^ ]*?)(?=($|\n|\r\n|\r|\s|\"|\[/URL]|']\[|]\[|\[/img]|</|'))",
+                                content)]
 
         for link in all_links:
             try:
@@ -234,7 +234,7 @@ class KemonoCrawler(Crawler):
         return current_offset, maximum_offset
 
     async def create_new_scrape_item(self, link: URL, old_scrape_item: ScrapeItem, user: str, title: str, post_id: str,
-                                     date: str, add_parent: Optional[URL] = None) -> None:
+                                    date: str, add_parent: Optional[URL] = None) -> None:
         """Creates a new scrape item with the same parent as the old scrape item"""
         post_title = None
         if self.manager.config_manager.settings_data['Download_Options']['separate_posts']:
