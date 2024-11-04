@@ -128,12 +128,12 @@ class ScraperClient:
 
     @limiter
     async def get_json(self, domain: str, url: URL, params: Optional[Dict] = None, headers_inc: Optional[Dict] = None,
-                       client_session: ClientSession = None, origin: Optional[ScrapeItem | URL] = None) -> Dict:
+                    client_session: ClientSession = None, origin: Optional[ScrapeItem | URL] = None) -> Dict:
         """Returns a JSON object from the given URL"""
         headers = {**self._headers, **headers_inc} if headers_inc else self._headers
 
         async with client_session.get(url, headers=headers, ssl=self.client_manager.ssl_context,
-                                      proxy=self.client_manager.proxy, params=params) as response:
+                                    proxy=self.client_manager.proxy, params=params) as response:
             await self.client_manager.check_http_status(response, origin=origin)
             await log_request_type(url, response.from_cache)
             await self.client_manager.check_http_status(response)
@@ -145,7 +145,7 @@ class ScraperClient:
 
     @limiter
     async def get_text(self, domain: str, url: URL, client_session: ClientSession,
-                       origin: Optional[ScrapeItem | URL] = None) -> str:
+                    origin: Optional[ScrapeItem | URL] = None) -> str:
         """Returns a text object from the given URL"""
         async with client_session.get(url, headers=self._headers, ssl=self.client_manager.ssl_context,
                                     proxy=self.client_manager.proxy) as response:
@@ -164,7 +164,7 @@ class ScraperClient:
                         origin: Optional[ScrapeItem | URL] = None) -> Dict:
         """Returns a JSON object from the given URL when posting data. If raw == True, returns raw binary data of response"""
         async with client_session.post(url, headers=self._headers, ssl=self.client_manager.ssl_context,
-                                       proxy=self.client_manager.proxy, data=data) as response:
+                                    proxy=self.client_manager.proxy, data=data) as response:
             await self.client_manager.check_http_status(response, origin=origin)
             if req_resp:
                 content = await response.content.read()
@@ -178,5 +178,5 @@ class ScraperClient:
     async def get_head(self, domain: str, url: URL, client_session: ClientSession) -> CIMultiDictProxy[str]:
         """Returns the headers from the given URL"""
         async with client_session.head(url, headers=self._headers, ssl=self.client_manager.ssl_context,
-                                       proxy=self.client_manager.proxy) as response:
+                                    proxy=self.client_manager.proxy) as response:
             return response.headers
