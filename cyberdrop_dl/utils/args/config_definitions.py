@@ -33,6 +33,9 @@ authentication_settings: Dict = {
         "xbunker_username": "",
         "xbunker_password": "",
     },
+    "Coomer": {
+        "session": "",
+    },
     "XXXBunker": {
         "PHPSESSID": "",
     },
@@ -114,8 +117,8 @@ settings: Dict = {
         "update_last_forum_post": True,
         "send_unsupported_to_jdownloader": False,
         "jdownloader_download_dir": None,
-        "jdownloader_autostart" : False,
-        "jdownloader_whitelist" : []
+        "jdownloader_autostart": False,
+        "jdownloader_whitelist": []
     },
     "Sorting": {
         "sort_downloads": False,

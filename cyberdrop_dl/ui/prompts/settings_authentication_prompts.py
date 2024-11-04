@@ -39,16 +39,17 @@ def edit_gofile_api_key_prompt (manager: Manager) -> None:
     ).execute()
     manager.config_manager.authentication_data["GoFile"]["gofile_api_key"] = gofile_api_key
 
-def edit_imgur_client_id_prompt(manager: Manager) -> None:
-    console.clear()
-    imgur_client_id = inquirer.text(
-        message="Enter the Imgur Client ID:",
-        default=manager.config_manager.authentication_data["Imgur"]["imgur_client_id"],
-        long_instruction="You can create an app and get your client ID "
-                        "from https://imgur.com/account/settings/apps",
-        vi_mode=manager.vi_mode,
-    ).execute()
-    manager.config_manager.authentication_data["Imgur"]["imgur_client_id"] = imgur_client_id
+        # Edit Imgur Client ID
+        elif action == 5:
+            console.clear()
+            imgur_client_id = inquirer.text(
+                message="Enter the Imgur Client ID:",
+                default=auth["Imgur"]["imgur_client_id"],
+                long_instruction="You can create an app and get your client ID "
+                                 "from https://imgur.com/account/settings/apps",
+                vi_mode=manager.vi_mode,
+            ).execute()
+            auth["Imgur"]["imgur_client_id"] = imgur_client_id
 
 def edit_pixeldrain_api_key_prompt(manager: Manager) -> None:
     console.clear()
