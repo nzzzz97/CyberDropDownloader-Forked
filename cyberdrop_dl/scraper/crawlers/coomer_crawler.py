@@ -151,8 +151,6 @@ class CoomerCrawler(Crawler):
 
     async def get_user_str_from_profile(self, soup: BeautifulSoup) -> str:
         """Gets the user string from a scrape item"""
-        async with self.request_limiter:
-            soup: BeautifulSoup = await self.client.get_BS4(self.domain, scrape_item.url, origin=scrape_item)
         user = soup.select_one("span[itemprop=name]").text
         return user
 
