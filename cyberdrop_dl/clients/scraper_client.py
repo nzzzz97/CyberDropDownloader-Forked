@@ -47,7 +47,6 @@ class ScraperClient:
         self._headers = {"user-agent": client_manager.user_agent}
         self._timeouts = aiohttp.ClientTimeout(total=client_manager.connection_timeout + 60,
                                             connect=client_manager.connection_timeout)
-                                            connect=client_manager.connection_timeout)
         self._global_limiter = self.client_manager.global_rate_limiter
 
         self.trace_configs = []
@@ -68,7 +67,7 @@ class ScraperClient:
     @limiter
     async def flaresolverr(self, domain: str, url: URL, client_session: ClientSession,
                         origin: Optional[ScrapeItem | URL] = None, with_response_url: bool = False) -> str:
-                        origin: Optional[ScrapeItem | URL] = None, with_response_url: bool = False) -> str:
+
         """Returns the resolved URL from the given URL"""
         if not self.client_manager.flaresolverr:
             raise DDOSGuardFailure(message="FlareSolverr is not configured", origin=origin)
